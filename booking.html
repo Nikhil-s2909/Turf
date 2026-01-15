@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Now | TurfPro</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <header>
+        <div class="logo">TurfPro</div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="gallery.html">Gallery</a></li>
+                <li><a href="booking.html" class="active">Booking</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><button id="themeToggle" class="btn-icon">☀️</button></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="page-header">
+        <div class="page-header-content">
+            <h1>Reserve Your Slot</h1>
+        </div>
+    </div>
+
+    <section class="booking-section">
+        <div class="booking-container reveal">
+            <!-- Left: Booking Form Options -->
+            <div class="booking-form-card">
+                <form id="bookingForm">
+                    <!-- Personal Info -->
+                    <div style="margin-bottom: 2rem;">
+                        <h3 class="section-label">1. Your Details</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="name">Name</label>
+                                <input type="text" id="name" required placeholder="John Doe">
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Phone</label>
+                                <input type="tel" id="phone" required placeholder="+91 98765 43210">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Date Selection -->
+                    <div style="margin-bottom: 2rem;">
+                        <h3 class="section-label">2. Select Date</h3>
+                        <input type="date" id="date" required>
+                    </div>
+
+                    <!-- Duration Selection -->
+                    <div style="margin-bottom: 2rem;">
+                        <h3 class="section-label">3. Duration</h3>
+                        <div class="options-grid" id="durationOptions">
+                            <div class="option-card selected" data-value="1 Hour">
+                                <h4>60 Mins</h4>
+                                <span>Standard</span>
+                            </div>
+                            <div class="option-card" data-value="1.5 Hours">
+                                <h4>90 Mins</h4>
+                                <span>Extended</span>
+                            </div>
+                            <div class="option-card" data-value="2 Hours">
+                                <h4>120 Mins</h4>
+                                <span>Pro Match</span>
+                            </div>
+                        </div>
+                        <input type="hidden" id="duration" value="1 Hour">
+                    </div>
+
+                    <!-- Time Slot Selection -->
+                    <div style="margin-bottom: 2rem;">
+                        <h3 class="section-label">4. Available Slots</h3>
+                        <div class="time-grid" id="timeSlots">
+                            <!-- JS will generate these -->
+                            <div class="time-slot" data-time="06:00 AM">06:00 AM</div>
+                            <div class="time-slot" data-time="07:00 AM">07:00 AM</div>
+                            <div class="time-slot" data-time="08:00 AM">08:00 AM</div>
+                            <div class="time-slot" data-time="04:00 PM">04:00 PM</div>
+                            <div class="time-slot" data-time="05:00 PM">05:00 PM</div>
+                            <div class="time-slot" data-time="06:00 PM">06:00 PM</div>
+                            <div class="time-slot" data-time="07:00 PM">07:00 PM</div>
+                            <div class="time-slot" data-time="08:00 PM">08:00 PM</div>
+                            <div class="time-slot" data-time="09:00 PM">09:00 PM</div>
+                            <div class="time-slot" data-time="10:00 PM">10:00 PM</div>
+                            <div class="time-slot" data-time="11:00 PM">11:00 PM</div>
+                        </div>
+                        <input type="hidden" id="time" required>
+                    </div>
+
+                    <button type="submit" class="btn" style="width: 100%;">Book via WhatsApp</button>
+                    <p style="text-align: center; margin-top: 1rem; font-size: 0.8rem; color: var(--text-muted);">
+                        *Availability will be confirmed by admin.
+                    </p>
+                </form>
+            </div>
+
+            <!-- Right: Live Summary -->
+            <div class="booking-summary">
+                <h3 style="margin-bottom: 1.5rem;">Booking Summary</h3>
+
+                <div class="summary-row">
+                    <span class="summary-label">Date</span>
+                    <span class="summary-value" id="summaryDate">--/--/--</span>
+                </div>
+                <div class="summary-row">
+                    <span class="summary-label">Time</span>
+                    <span class="summary-value" id="summaryTime">--:--</span>
+                </div>
+                <div class="summary-row">
+                    <span class="summary-label">Duration</span>
+                    <span class="summary-value" id="summaryDuration">1 Hour</span>
+                </div>
+
+                <div class="summary-row">
+                    <span class="summary-label">Total Estimate</span>
+                    <span class="summary-value total-price" id="summaryPrice">₹1200</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 TurfPro. All rights reserved.</p>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+
+</html>
