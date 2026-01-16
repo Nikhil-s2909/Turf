@@ -153,17 +153,24 @@ function initChatbot() {
     chatbot.className = 'chatbot';
     chatbot.innerHTML = `
         <header>
-            <h2>Chat with Us</h2>
+            <h2>TurfPro Bot</h2>
             <span class="close-btn">✕</span>
         </header>
-        <ul class="chatbox">
+        <div class="chatbox">
             <li class="chat incoming">
                 <span>🤖</span>
                 <p>Hi there! How can I help you today?</p>
             </li>
-        </ul>
+            <!-- Quick Replies -->
+            <div class="chat-options">
+                <button class="chat-option-btn" data-msg="Hi">Hi</button>
+                <button class="chat-option-btn" data-msg="Show turf images">Show turf images</button>
+                <button class="chat-option-btn" data-msg="Booking / Enquiry">Booking / Enquiry</button>
+                <button class="chat-option-btn" data-msg="More">More</button>
+            </div>
+        </div>
         <div class="chat-input">
-            <textarea placeholder="Enter a message..." spellcheck="false" required></textarea>
+            <textarea placeholder="Type a message..." spellcheck="false" required></textarea>
             <span id="send-btn">➤</span>
         </div>
     `;
@@ -174,23 +181,25 @@ function initChatbot() {
     const chatbox = chatbot.querySelector('.chatbox');
     const chatInput = chatbot.querySelector('textarea');
     const sendBtn = chatbot.querySelector('#send-btn');
+    const optionBtns = chatbot.querySelectorAll('.chat-option-btn');
 
     let isChatOpen = false;
 
     // Toggle Chat
-    toggler.addEventListener('click', () => {
+    const toggleChat = () => {
         document.body.classList.toggle('show-chatbot');
         isChatOpen = !isChatOpen;
         toggler.innerHTML = isChatOpen ? '✕' : '💬';
-    });
+    };
 
+    toggler.addEventListener('click', toggleChat);
     closeBtn.addEventListener('click', () => {
         document.body.classList.remove('show-chatbot');
         isChatOpen = false;
         toggler.innerHTML = '💬';
     });
 
-    // Send Message
+    // Handle Manual Message
     const handleChat = () => {
         const userMessage = chatInput.value.trim();
         if (!userMessage) return;
@@ -206,41 +215,61 @@ function initChatbot() {
             chatbox.appendChild(createChatLi(botResponse, 'incoming'));
             chatbox.scrollTo(0, chatbox.scrollHeight);
         }, 600);
-    }
+    };
+
+    // Handle Quick Replies
+    optionBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const msg = btn.getAttribute('data-msg');
+
+            // Append User Selection (Visual Feedback)
+            chatbox.appendChild(createChatLi(msg, 'outgoing'));
+            chatbox.scrollTo(0, chatbox.scrollHeight);
+
+            setTimeout(() => {
+                if (msg === "Hi") {
+                    chatbox.appendChild(createChatLi("Hello! Welcome to TurfPro. Ready to play?", 'incoming'));
+                } else if (msg === "Show turf images") {
+                    chatbox.appendChild(createChatLi("Opening our gallery for you...", 'incoming'));
+                    window.open('gallery.html', '_blank');
+                } else if (msg === "Booking / Enquiry") {
+                    chatbox.appendChild(createChatLi("For bookings, call us at +91 98765 43210 or email support@turfpro.com", 'incoming'));
+                } else if (msg === "More") {
+                    chatbox.appendChild(createChatLi("Connecting you to WhatsApp...", 'incoming'));
+                    const waLink = "https://wa.me/919876543210?text=Hi%20TurfPro,%20I%20have%20a%20query.";
+                    window.open(waLink, '_blank');
+                }
+                chatbox.scrollTo(0, chatbox.scrollHeight);
+            }, 600);
+        });
+    });
 
     sendBtn.addEventListener('click', handleChat);
 
     chatInput.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' && !e.shiftKey) { // Enter to send, Shift+Enter for new line
+        if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
             handleChat();
         }
     });
-}
 
-function createChatLi(message, className) {
-    const chatLi = document.createElement("li");
-    chatLi.classList.add("chat", className);
-    let chatContent = className === "outgoing" ? `<p></p>` : `<span>🤖</span><p></p>`;
-    chatLi.innerHTML = chatContent;
-    chatLi.querySelector("p").innerText = message;
-    return chatLi;
+    // Helper: Create Chat LI
+    function createChatLi(message, className) {
+        const chatLi = document.createElement("li");
+        chatLi.classList.add("chat", className);
+        let chatContent = className === "outgoing" ? `<p></p>` : `<span>🤖</span><p></p>`;
+        chatLi.innerHTML = chatContent;
+        chatLi.querySelector("p").innerText = message;
+        return chatLi;
+    }
 }
 
 function getBotResponse(input) {
     input = input.toLowerCase();
-
-    if (input.includes("hello") || input.includes("hi")) {
-        return "Hello! Welcome to TurfPro. Would you like to book a slot?";
-    } else if (input.includes("book") || input.includes("slot") || input.includes("price")) {
-        return "You can book a slot directly via our Booking page! Prices act on hourly basis.";
-    } else if (input.includes("location") || input.includes("where")) {
-        return "We are located at 123 Sports Complex, City Center.";
-    } else if (input.includes("contact") || input.includes("number")) {
-        return "You can reach us at +91 98765 43210 or use the Contact page.";
-    } else {
-        return "I'm just a simple bot. Please check our About page or Contact us directly for more info!";
-    }
+    if (input.includes("hello") || input.includes("hi")) return "Hello! Welcome to TurfPro.";
+    if (input.includes("price") || input.includes("cost")) return "Prices start at ₹1200/hr.";
+    if (input.includes("time") || input.includes("open")) return "We are open 6 AM to 11 PM.";
+    return "I am a simple bot. Please use the Quick Reply buttons for more actions!";
 }
 
 /* =========================================
